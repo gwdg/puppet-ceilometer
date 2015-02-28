@@ -27,9 +27,18 @@ class ceilometer::params {
       $pymongo_package_name            = 'python-pymongo'
       $psycopg_package_name            = 'python-psycopg2'
       $agent_notification_service_name = 'openstack-ceilometer-notification'
-      $ceilometer_wsgi_script_path     = '/var/www/cgi-bin/ceilometer'
-      $ceilometer_wsgi_script_source   = '/usr/lib/python2.7/site-packages/ceilometer/api/app.wsgi'
-      $sqlite_package_name             = undef
+
+      # db packages
+      if $::operatingsystem == 'Fedora' and $::operatingsystemrelease >= 18 {
+        # fallback to stdlib version, not provided on fedora
+        $sqlite_package_name      = undef
+      } else {
+        $sqlite_package_name      = 'python-sqlite2'
+      }
+
+      $ceilometer_wsgi_script_path    = '/var/www/cgi-bin/ceilometer'
+      $ceilometer_wsgi_script_source  = '/usr/lib/python2.7/site-packages/ceilometer/api/app.wsgi'
+
     }
     'Debian': {
       # package names
