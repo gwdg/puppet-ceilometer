@@ -42,4 +42,11 @@ class ceilometer::dispatcher::gnocchi (
     'dispatcher_gnocchi/resources_definition_file': value => $resources_definition_file;
   }
 
+  # Fix missing 'gnocchi_resources.yaml' in Mitaka
+  file { '/etc/ceilometer/gnocchi_resources.yaml':
+    content => file('ceilometer/gnocchi_resources.yaml'),
+    require => Package['ceilometer-common'],
+    before  => Service['ceilometer-collector'],
+  }
+
 }
