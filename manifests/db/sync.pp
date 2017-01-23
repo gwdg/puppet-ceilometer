@@ -7,10 +7,10 @@
 # [*extra_params*]
 #   (Optional) String of extra command line parameters
 #   to append to the ceilometer-upgrade command.
-#   Defaults to undef.
+#   Defaults to '--skip-gnocchi-resource-types'.
 #
 class ceilometer::db::sync(
-  $extra_params = undef,
+  $extra_params = '--skip-gnocchi-resource-types',
 ) {
 
   include ::ceilometer::params
@@ -21,7 +21,7 @@ class ceilometer::db::sync(
   Ceilometer_config<||> -> Exec['ceilometer-dbsync']
   Ceilometer_config<| title == 'database/connection' |> ~> Exec['ceilometer-dbsync']
 
-  exec { 'ceilometer-dbsync':
+  exec { 'ceilometer-upgrade':
     command     => "${::ceilometer::params::dbsync_command} ${extra_params}",
     path        => '/usr/bin',
     user        => $::ceilometer::params::user,
