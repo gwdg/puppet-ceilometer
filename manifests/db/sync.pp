@@ -21,7 +21,7 @@ class ceilometer::db::sync(
   Ceilometer_config<||> -> Exec['ceilometer-dbsync']
   Ceilometer_config<| title == 'database/connection' |> ~> Exec['ceilometer-dbsync']
 
-  exec { 'ceilometer-upgrade':
+  exec { 'ceilometer-dbsync':
     command     => "${::ceilometer::params::dbsync_command} ${extra_params}",
     path        => '/usr/bin',
     user        => $::ceilometer::params::user,
